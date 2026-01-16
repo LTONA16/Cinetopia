@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1076298919294",
+    "project_id": "cinetopia-60992",
+    "storage_bucket": "cinetopia-60992.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076298919294:android:5f3c7b382749c7adcb572f",
+        "android_client_info": {
+          "package_name": "com.example.cinetopia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlNwylj_u_LU4DmL7H9U_HvsV9oW9c94o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
