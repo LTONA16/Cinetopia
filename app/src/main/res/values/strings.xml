@@ -1,8 +1,14 @@
 <resources>
     <string name="app_name">Cinetopia</string>
-    
+
     <string name="Item_Inicio">Inicio</string>
     <string name="Item_Cuenta">Cuenta</string>
+    <string name="Item_Recompensas">Recompensas</string>
     <string name="Item_Boletos">Boletos</string>
     <string name="Item_Dulceria">Dulceria</string>
+
+    <string name="TituloRL">Cinetopia</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
