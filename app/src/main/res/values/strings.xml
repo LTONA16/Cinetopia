@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Cinetopia</string>
+    
+    <string name="Item_Inicio">Inicio</string>
+    <string name="Item_Cuenta">Cuenta</string>
+    <string name="Item_Boletos">Boletos</string>
+    <string name="Item_Dulceria">Dulceria</string>
 </resources>
