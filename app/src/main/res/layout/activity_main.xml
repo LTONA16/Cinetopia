@@ -57,7 +57,7 @@
         android:src="@drawable/ic_recompensas"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="54dp"
+        android:layout_marginBottom="40dp"
     />
 
 </RelativeLayout>
