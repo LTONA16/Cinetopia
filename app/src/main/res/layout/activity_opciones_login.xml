@@ -27,6 +27,7 @@
             android:text="@string/Ingresar_email"
             android:textAllCaps="true"
             app:cornerRadius="8dp"
+
         />
 
         <ImageView
