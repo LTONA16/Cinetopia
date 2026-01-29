@@ -14,6 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cinetopia">
         <activity
+            android:name=".Registro_email"
+            android:exported="false" />
+        <activity
+            android:name=".Opciones_Login.Login_email"
+            android:exported="false" />
+        <activity
             android:name=".Opciones_Login.Login_email"
             android:exported="false" />
         <activity
@@ -26,13 +32,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Opciones_Login.Login_email"
-            android:exported="false"
-        />
-        <activity
             android:name=".MainActivity"
-            android:exported="false"
-        />
+            android:exported="false" />
     </application>
 
 </manifest>

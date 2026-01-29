@@ -8,24 +8,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cinetopia.Opciones_Login.Login_email
+import com.example.cinetopia.databinding.ActivityOpcionesLoginBinding
 
 class OpcionesLogin : AppCompatActivity() {
+
+    private lateinit var binding: ActivityOpcionesLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_opciones_login)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        // --- AQUÍ EMPIEZA TU LÓGICA DE REDIRECCIÓN ---
+        binding = ActivityOpcionesLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val btnIngresarEmail = findViewById<Button>(R.id.Ingresar_email)
-
-        btnIngresarEmail.setOnClickListener {
-            val intent = Intent(this, Login_email::class.java)
+        binding.IngresarEmail.setOnClickListener {
+            val intent = Intent(this@OpcionesLogin, Login_email::class.java)
             startActivity(intent)
         }
 
