@@ -43,6 +43,19 @@ android {
 }
 
 dependencies {
+    // Material Design Components
+    implementation("com.google.android.material:material:1.11.0")
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    // CardView
+    implementation("androidx.cardview:cardview:1.0.0")
+    // Fragment KTX
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    // Opcional: Glide para cargar imágenes (si quieres cargar desde URL)
+    // implementation("com.github.bumptech.glide:glide:4.16.0")
+    // annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
