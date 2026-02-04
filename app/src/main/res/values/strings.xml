@@ -23,4 +23,9 @@
     <string name="Btn_registrarme">Registrarme</string>
     <string name="Txt_registrarme">Registrarme</string>
 
+    <string name="Txt_registro">Registro de usuario</string>
+    <string name="Er_r_password">Repetir contraseña</string>
+    <string name="Btn_registrar">Registrar</string>
+
+
 </resources>
