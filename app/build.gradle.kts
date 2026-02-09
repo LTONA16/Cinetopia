@@ -52,6 +52,9 @@ dependencies {
     // Fragment KTX
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
+    implementation(libs.firebaseAuth)
+    implementation(libs.firebaseDatabase)
+
     // Opcional: Glide para cargar imágenes (si quieres cargar desde URL)
     // implementation("com.github.bumptech.glide:glide:4.16.0")
     // annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
