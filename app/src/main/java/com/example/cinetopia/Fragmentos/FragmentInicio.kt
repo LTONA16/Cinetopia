@@ -1,112 +1,88 @@
-package com.example.cinetopia.Fragmentos
+package com.example.cinetopia
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.cinetopia.Adaptadores.PeliculaAdapter
 import com.example.cinetopia.Modelos.Pelicula
-import com.example.cinetopia.R
-import com.google.android.material.button.MaterialButton
+import com.example.cinetopia.databinding.FragmentInicioBinding
 
 class FragmentInicio : Fragment() {
 
-    private lateinit var rvCartelera: RecyclerView
-    private lateinit var rvPreventa: RecyclerView
-    private lateinit var rvCinesCercanos: RecyclerView
-    private lateinit var btnExplorar: MaterialButton
+    private var _binding: FragmentInicioBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inicio, container, false)
+    ): View {
+        _binding = FragmentInicioBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inicializar vistas
-        rvCartelera = view.findViewById(R.id.rvCartelera)
-        rvPreventa = view.findViewById(R.id.rvPreventa)
-        rvCinesCercanos = view.findViewById(R.id.rvCinesCercanos)
-        btnExplorar = view.findViewById(R.id.btnExplorar)
-
-        // Configurar RecyclerViews
         setupCartelera()
         setupPreventa()
-        setupCinesCercanos()
+        setupCines()
 
-        // Configurar botón explorar
-        btnExplorar.setOnClickListener {
+        binding.btnExplorar.setOnClickListener {
             Toast.makeText(requireContext(), "Explorando cartelera...", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setupCartelera() {
-        // Datos de ejemplo para cartelera (7 películas)
-        val peliculasCartelera = listOf(
-            Pelicula(1, "Película 1", "p1", 8.5, "Acción", 120),
-            Pelicula(2, "Película 2", "p2", 7.8, "Drama", 110),
-            Pelicula(3, "Película 3", "p3", 9.0, "Ciencia Ficción", 140),
-            Pelicula(4, "Película 4", "p4", 8.2, "Thriller", 105),
-            Pelicula(5, "Película 5", "p5", 7.5, "Comedia", 95),
-            Pelicula(6, "Película 6", "p6", 8.8, "Aventura", 130),
-            Pelicula(7, "Película 7", "p7", 7.9, "Terror", 100)
+        val peliculas = listOf(
+            Pelicula(1, "Batman", "p1", 8.5, "Acción", 120),
+            Pelicula(2, "Spiderman", "p2", 7.9, "Drama", 110),
+            Pelicula(3, "Dune", "p3", 9.0, "Sci-Fi", 140),
+            Pelicula(4, "Avatar", "p4", 8.2, "Aventura", 130)
         )
 
-        val adapter = PeliculaAdapter(peliculasCartelera) { pelicula ->
-            Toast.makeText(requireContext(), "Seleccionaste: ${pelicula.titulo}", Toast.LENGTH_SHORT).show()
+        binding.rvCartelera.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = PeliculaAdapter(peliculas) { pelicula ->
+                Toast.makeText(requireContext(), pelicula.titulo, Toast.LENGTH_SHORT).show()
+            }
         }
-
-        rvCartelera.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvCartelera.adapter = adapter
     }
 
     private fun setupPreventa() {
-        // Datos de ejemplo para preventa
-        val peliculasPreventa = listOf(
-            Pelicula(9, "Película 9", "p9", 8.7, "Drama", 115),
-            Pelicula(8, "Película 8", "p8", 9.2, "Acción", 125),
-            Pelicula(1, "Película 1", "p1", 8.5, "Ciencia Ficción", 120),
-            Pelicula(2, "Película 2", "p2", 7.8, "Thriller", 110),
-            Pelicula(3, "Película 3", "p3", 9.0, "Aventura", 140)
+        val peliculas = listOf(
+            Pelicula(5, "Matrix", "p5", 8.7, "Acción", 125),
+            Pelicula(6, "Joker", "p6", 9.2, "Drama", 115)
         )
 
-        val adapter = PeliculaAdapter(peliculasPreventa) { pelicula ->
-            Toast.makeText(requireContext(), "Preventa: ${pelicula.titulo}", Toast.LENGTH_SHORT).show()
+        binding.rvPreventa.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = PeliculaAdapter(peliculas) { pelicula ->
+                Toast.makeText(requireContext(), "Preventa: ${pelicula.titulo}", Toast.LENGTH_SHORT).show()
+            }
         }
-
-        rvPreventa.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvPreventa.adapter = adapter
     }
 
-    private fun setupCinesCercanos() {
-        // Datos de ejemplo para cines cercanos
-        val peliculasCercanos = listOf(
-            Pelicula(4, "Película 4", "p4", 8.2, "Comedia", 105),
-            Pelicula(5, "Película 5", "p5", 7.5, "Terror", 95),
-            Pelicula(6, "Película 6", "p6", 8.8, "Drama", 130),
-            Pelicula(7, "Película 7", "p7", 7.9, "Acción", 100),
-            Pelicula(8, "Película 8", "p8", 9.2, "Ciencia Ficción", 125),
-            Pelicula(9, "Película 9", "p9", 8.7, "Aventura", 115)
+    private fun setupCines() {
+        val peliculas = listOf(
+            Pelicula(7, "Rocky", "p7", 8.0, "Drama", 100),
+            Pelicula(8, "Alien", "p8", 8.8, "Terror", 110)
         )
 
-        val adapter = PeliculaAdapter(peliculasCercanos) { pelicula ->
-            Toast.makeText(requireContext(), "Cine cercano: ${pelicula.titulo}", Toast.LENGTH_SHORT).show()
+        binding.rvCinesCercanos.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = PeliculaAdapter(peliculas) { pelicula ->
+                Toast.makeText(requireContext(), "Cercano: ${pelicula.titulo}", Toast.LENGTH_SHORT).show()
+            }
         }
-
-        rvCinesCercanos.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvCinesCercanos.adapter = adapter
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = FragmentInicio()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -12,23 +12,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Hero Section -->
+        <!-- HERO -->
         <RelativeLayout
-            android:id="@+id/heroSection"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:background="@drawable/hero_gradient">
 
-            <!-- Imagen de fondo del hero -->
             <ImageView
-                android:id="@+id/heroImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/hero_background"
                 android:alpha="0.6"/>
 
-            <!-- Contenido del Hero -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,135 +34,104 @@
                 android:padding="24dp">
 
                 <TextView
-                    android:id="@+id/tvBienvenida"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Bienvenido a"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    android:fontFamily="sans-serif-light"
-                    android:alpha="0.9"/>
+                    android:textColor="#FFF"
+                    android:textSize="18sp"/>
 
                 <TextView
-                    android:id="@+id/tvTituloApp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CINETOPIA"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#FFF"
                     android:textSize="48sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="8dp"
-                    android:letterSpacing="0.1"/>
+                    android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/tvSubtitulo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tu cine, tu pasión"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp"
-                    android:alpha="0.85"/>
+                    android:textColor="#FFF"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnExplorar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Explorar Cartelera"
-                    android:textColor="#000000"
-                    android:backgroundTint="#FFD700"
                     android:layout_marginTop="24dp"
-                    android:paddingHorizontal="32dp"
-                    android:paddingVertical="12dp"
-                    app:cornerRadius="24dp"
-                    android:textStyle="bold"/>
-
+                    android:textColor="#000"
+                    android:backgroundTint="#FFD700"
+                    app:cornerRadius="24dp"/>
             </LinearLayout>
-
         </RelativeLayout>
 
-        <!-- Sección Cartelera -->
+        <!-- CARTELERA -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="32dp"
-            android:paddingHorizontal="16dp">
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/tvCartelera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CARTELERA"
-                android:textColor="#FFFFFF"
+                android:textColor="#FFF"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
+                android:textStyle="bold"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCartelera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
         </LinearLayout>
 
-        <!-- Sección Preventa -->
+        <!-- PREVENTA -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="32dp"
-            android:paddingHorizontal="16dp">
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/tvPreventa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PREVENTA"
-                android:textColor="#FFFFFF"
+                android:textColor="#FFF"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
+                android:textStyle="bold"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPreventa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
         </LinearLayout>
 
-        <!-- Sección Cines Cercanos -->
+        <!-- CINES -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="32dp"
-            android:paddingHorizontal="16dp"
+            android:padding="16dp"
             android:paddingBottom="24dp">
 
             <TextView
-                android:id="@+id/tvCinesCercanos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CINES CERCANOS"
-                android:textColor="#FFFFFF"
+                android:textColor="#FFF"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
+                android:textStyle="bold"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCinesCercanos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
         </LinearLayout>
 
     </LinearLayout>
-
 </ScrollView>
