@@ -1,60 +1,97 @@
 package com.example.cinetopia.Fragmentos
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.cinetopia.R
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.example.cinetopia.OpcionesLogin
+import com.example.cinetopia.databinding.FragmentCuentaBinding
+import com.google.firebase.auth.FirebaseAuth
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentCuenta.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentCuenta : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private var _binding: FragmentCuentaBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var mContext: Context
+
+    override fun onAttach(context: Context) {
+        mContext = context
+        super.onAttach(context)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cuenta, container, false)
+    ): View {
+        _binding = FragmentCuentaBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentCuenta.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentCuenta().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        // Mostrar información del usuario
+        setupUserInfo()
+
+        // Configurar listeners de las cards
+        setupClickListeners()
+    }
+
+    private fun setupUserInfo() {
+        val user = firebaseAuth.currentUser
+        binding.tvNombre.text = user?.displayName ?: "Usuario"
+        binding.tvEmail.text = user?.email ?: "correo@ejemplo.com"
+    }
+
+    private fun setupClickListeners() {
+        // Editar Perfil
+        binding.cardEditarPerfil.setOnClickListener {
+            Toast.makeText(mContext, "Editar Perfil", Toast.LENGTH_SHORT).show()
+            // TODO: Navegar a pantalla de editar perfil
+        }
+
+        // Mis Compras
+        binding.cardMisCompras.setOnClickListener {
+            Toast.makeText(mContext, "Mis Compras", Toast.LENGTH_SHORT).show()
+            // TODO: Navegar a pantalla de mis compras
+        }
+
+        // Notificaciones
+        binding.cardNotificaciones.setOnClickListener {
+            Toast.makeText(mContext, "Notificaciones", Toast.LENGTH_SHORT).show()
+            // TODO: Navegar a pantalla de notificaciones
+        }
+
+        // Privacidad
+        binding.cardPrivacidad.setOnClickListener {
+            Toast.makeText(mContext, "Privacidad y Seguridad", Toast.LENGTH_SHORT).show()
+            // TODO: Navegar a pantalla de privacidad
+        }
+
+        // Ayuda
+        binding.cardAyuda.setOnClickListener {
+            Toast.makeText(mContext, "Ayuda y Soporte", Toast.LENGTH_SHORT).show()
+            // TODO: Navegar a pantalla de ayuda
+        }
+
+        // Cerrar Sesión
+        binding.BtnCerrarSesion.setOnClickListener {
+            firebaseAuth.signOut()
+            startActivity(Intent(mContext, OpcionesLogin::class.java))
+            activity?.finishAffinity()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

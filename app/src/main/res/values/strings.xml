@@ -27,5 +27,6 @@
     <string name="Er_r_password">Repetir contraseña</string>
     <string name="Btn_registrar">Registrar</string>
 
+    <string name="Btn_cerrar_sesion">Cerrar sesión</string>
 
 </resources>
