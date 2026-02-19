@@ -4,8 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.cinetopia.Fragmentos.FragmentBoletos
 import com.example.cinetopia.OpcionesLogin
 import com.example.cinetopia.Fragmentos.FragmentCuenta
+import com.example.cinetopia.Fragmentos.FragmentDulceria
+import com.example.cinetopia.Fragmentos.FragmentRecompensas
 import com.example.cinetopia.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -40,13 +43,16 @@ class MainActivity : AppCompatActivity() {
                     loadFragment(FragmentCuenta())
                     true
                 }
-                // Agrega más casos según tu menú
                 R.id.Item_boletos -> {
-                    // TODO: Fragmento de boletos
+                    loadFragment(FragmentBoletos())
                     true
                 }
                 R.id.Item_dulceria -> {
-                    // TODO: Fragmento de dulcería
+                    loadFragment(FragmentDulceria())
+                    true
+                }
+                R.id.Item_recompensas -> {
+                    loadFragment(FragmentRecompensas())
                     true
                 }
                 else -> false
@@ -54,14 +60,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // FAB - Botón de Recompensas (NO abre FragmentCuenta)
+        // En el listener del FAB
         binding.FAB.setOnClickListener {
-            // TODO: Abrir pantalla de recompensas o mostrar dialog
-            // Por ahora puedes dejar vacío o mostrar un Toast
-            android.widget.Toast.makeText(
-                this,
-                "Recompensas próximamente",
-                android.widget.Toast.LENGTH_SHORT
-            ).show()
+            loadFragment(FragmentRecompensas())
         }
     }
 

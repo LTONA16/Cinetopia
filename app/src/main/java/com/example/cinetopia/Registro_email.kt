@@ -5,14 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.cinetopia.databinding.ActivityRegistroEmailBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import java.net.InetAddress
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class Registro_email : AppCompatActivity() {
     private lateinit var binding: ActivityRegistroEmailBinding
@@ -38,6 +38,7 @@ class Registro_email : AppCompatActivity() {
     private var email = ""
     private var password = ""
     private var r_password = ""
+
     private fun validarInfo() {
         email = binding.EtEmail.text.toString().trim()
         password = binding.EtPassword.text.toString().trim()
@@ -73,16 +74,15 @@ class Registro_email : AppCompatActivity() {
         progressDialog.show()
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-        .addOnSuccessListener {
-            llenarInfoDB()
-        }
-        .addOnFailureListener { exception ->
-            progressDialog.dismiss()
-            Toast.makeText(this,
-                "No se registró el usuario debido a ${exception.message}",
-                Toast.LENGTH_SHORT).show()
-
-        }
+            .addOnSuccessListener {
+                llenarInfoDB()
+            }
+            .addOnFailureListener { exception ->
+                progressDialog.dismiss()
+                Toast.makeText(this,
+                    "No se registró el usuario debido a ${exception.message}",
+                    Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun llenarInfoDB() {
@@ -107,9 +107,8 @@ class Registro_email : AppCompatActivity() {
         ref.child(uidUsuario!!)
             .setValue(hashMap)
             .addOnSuccessListener {
-                progressDialog.dismiss()
-                startActivity(Intent(this, MainActivity::class.java))
-                finishAffinity()
+                // Después de guardar en DB, enviar email de bienvenida
+                enviarEmailBienvenida()
             }
             .addOnFailureListener { exception ->
                 progressDialog.dismiss()
@@ -118,5 +117,55 @@ class Registro_email : AppCompatActivity() {
                     Toast.LENGTH_SHORT)
                     .show()
             }
+    }
+
+    private fun enviarEmailBienvenida() {
+        progressDialog.setMessage("Enviando email de bienvenida...")
+
+        // Enviar email en segundo plano usando coroutines
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val emailEnviado = EmailSender.enviarEmailBienvenida(
+                    emailDestino = email,
+                    nombreUsuario = email,
+                    password = password
+                )
+
+                withContext(Dispatchers.Main) {
+                    progressDialog.dismiss()
+
+                    if (emailEnviado) {
+                        Toast.makeText(
+                            this@Registro_email,
+                            "Registro exitoso. Revisa tu correo electrónico 📧",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            this@Registro_email,
+                            "Registro exitoso ✓",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    // Ir al MainActivity
+                    startActivity(Intent(this@Registro_email, MainActivity::class.java))
+                    finishAffinity()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    progressDialog.dismiss()
+                    Toast.makeText(
+                        this@Registro_email,
+                        "Registro exitoso ✓",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    // Ir al MainActivity aunque falle el email
+                    startActivity(Intent(this@Registro_email, MainActivity::class.java))
+                    finishAffinity()
+                }
+            }
+        }
     }
 }

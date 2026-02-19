@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1076298919294",
+    "firebase_url": "https://cinetopia-60992-default-rtdb.firebaseio.com",
     "project_id": "cinetopia-60992",
     "storage_bucket": "cinetopia-60992.firebasestorage.app"
   },
@@ -12,7 +13,12 @@
           "package_name": "com.example.cinetopia"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1076298919294-lgbtpnknmu8ecv2cf7akesf89mhof7c1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDlNwylj_u_LU4DmL7H9U_HvsV9oW9c94o"
@@ -20,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076298919294-lgbtpnknmu8ecv2cf7akesf89mhof7c1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
