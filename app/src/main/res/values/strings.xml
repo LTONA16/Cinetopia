@@ -28,5 +28,7 @@
     <string name="Btn_registrar">Registrar</string>
 
     <string name="Btn_cerrar_sesion">Cerrar sesión</string>
+    <string name="default_web_client_id">1076298919294-qbdju1nij8tbk8ne6ii2j0c6cuvjj9v0.apps.googleusercontent.com</string>
+
 
 </resources>

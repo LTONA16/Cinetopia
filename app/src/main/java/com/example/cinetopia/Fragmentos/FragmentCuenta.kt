@@ -1,4 +1,4 @@
-package com.example.cinetopia.Fragmentos
+package com.example.cinetopia
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.cinetopia.OpcionesLogin
+
 import com.example.cinetopia.databinding.FragmentCuentaBinding
 import com.google.firebase.auth.FirebaseAuth
 

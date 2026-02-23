@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "1076298919294-lgbtpnknmu8ecv2cf7akesf89mhof7c1.apps.googleusercontent.com",
+          "client_id": "1076298919294-h0699re23ri512ui6ceqsi3jjb7afrns.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cinetopia",
+            "certificate_hash": "b01e274aee9d2734c86e00407b91168ef25fa8d2"
+          }
+        },
+        {
+          "client_id": "1076298919294-qbdju1nij8tbk8ne6ii2j0c6cuvjj9v0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
