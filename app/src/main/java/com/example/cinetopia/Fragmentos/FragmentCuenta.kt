@@ -1,4 +1,4 @@
-package com.example.cinetopia
+package com.example.cinetopia.Fragmentos
 
 import android.content.Context
 import android.content.Intent
@@ -9,9 +9,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.cinetopia.OpcionesLogin
-
+import com.example.cinetopia.R
 import com.example.cinetopia.databinding.FragmentCuentaBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import kotlin.random.Random
 
 class FragmentCuenta : Fragment() {
 
@@ -20,9 +28,14 @@ class FragmentCuenta : Fragment() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var mContext: Context
 
+    // Lista de recursos de imagen disponibles (p1 a p10)
+    private val profileImages = listOf(
+        R.drawable.pfp1, R.drawable.pfp2, R.drawable.pfp3, R.drawable.pfp4,R.drawable.pfp5
+    )
+
     override fun onAttach(context: Context) {
-        mContext = context
         super.onAttach(context)
+        mContext = context
     }
 
     override fun onCreateView(
@@ -39,51 +52,93 @@ class FragmentCuenta : Fragment() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        // Establecer imagen aleatoria
+        setRandomProfileImage()
+
         // Mostrar información del usuario
-        setupUserInfo()
+        cargarInformacion()
 
         // Configurar listeners de las cards
         setupClickListeners()
     }
 
-    private fun setupUserInfo() {
+    private fun setRandomProfileImage() {
+        // Seleccionar un índice aleatorio de la lista
+        val randomIndex = Random.nextInt(profileImages.size)
+        binding.ivPerfil.setImageResource(profileImages[randomIndex])
+    }
+
+    private fun cargarInformacion() {
         val user = firebaseAuth.currentUser
-        binding.tvNombre.text = user?.displayName ?: "Usuario"
-        binding.tvEmail.text = user?.email ?: "correo@ejemplo.com"
+        val uid = user?.uid
+
+        if (uid != null) {
+            val ref = FirebaseDatabase.getInstance().getReference("Usuarios")
+            ref.child(uid).addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (isAdded) {
+                        val nombres = "${snapshot.child("nombres").value}"
+                        val email = "${snapshot.child("email").value}"
+                        val fechaNac = "${snapshot.child("fecha_nac").value}"
+                        val telefono = "${snapshot.child("codigoTelefono").value}"
+                        val tiempo = snapshot.child("tiempo").value as? Long ?: 0L
+
+                        val fechaRegistro = if (tiempo != 0L) {
+                            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                            sdf.format(Date(tiempo))
+                        } else {
+                            "N/A"
+                        }
+
+                        binding.tvNombre.text = if (nombres.isNotEmpty() && nombres != "null") nombres else "Usuario"
+                        binding.tvEmail.text = if (email != "null") email else ""
+                        
+                        binding.tvNombresCuenta.text = if (nombres.isNotEmpty() && nombres != "null") nombres else "No especificado"
+                        binding.tvEmailCuenta.text = if (email != "null") email else "No especificado"
+                        binding.tvFechaNacCuenta.text = if (fechaNac.isNotEmpty() && fechaNac != "null") fechaNac else "No especificada"
+                        binding.tvTelefonoCuenta.text = if (telefono.isNotEmpty() && telefono != "null") telefono else "No especificado"
+                        binding.tvMiembroDesdeCuenta.text = fechaRegistro
+
+                        if (user.isEmailVerified) {
+                            binding.tvEstadoCuenta.text = "Verificado"
+                            binding.tvEstadoCuenta.setTextColor(mContext.getColor(android.R.color.holo_green_dark))
+                        } else {
+                            binding.tvEstadoCuenta.text = "No verificado"
+                            binding.tvEstadoCuenta.setTextColor(mContext.getColor(android.R.color.holo_red_dark))
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    if (isAdded) {
+                        Toast.makeText(mContext, "Error al cargar datos", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+        }
     }
 
     private fun setupClickListeners() {
-        // Editar Perfil
         binding.cardEditarPerfil.setOnClickListener {
             Toast.makeText(mContext, "Editar Perfil", Toast.LENGTH_SHORT).show()
-            // TODO: Navegar a pantalla de editar perfil
         }
 
-        // Mis Compras
         binding.cardMisCompras.setOnClickListener {
             Toast.makeText(mContext, "Mis Compras", Toast.LENGTH_SHORT).show()
-            // TODO: Navegar a pantalla de mis compras
         }
 
-        // Notificaciones
         binding.cardNotificaciones.setOnClickListener {
             Toast.makeText(mContext, "Notificaciones", Toast.LENGTH_SHORT).show()
-            // TODO: Navegar a pantalla de notificaciones
         }
 
-        // Privacidad
         binding.cardPrivacidad.setOnClickListener {
             Toast.makeText(mContext, "Privacidad y Seguridad", Toast.LENGTH_SHORT).show()
-            // TODO: Navegar a pantalla de privacidad
         }
 
-        // Ayuda
         binding.cardAyuda.setOnClickListener {
             Toast.makeText(mContext, "Ayuda y Soporte", Toast.LENGTH_SHORT).show()
-            // TODO: Navegar a pantalla de ayuda
         }
 
-        // Cerrar Sesión
         binding.BtnCerrarSesion.setOnClickListener {
             firebaseAuth.signOut()
             startActivity(Intent(mContext, OpcionesLogin::class.java))

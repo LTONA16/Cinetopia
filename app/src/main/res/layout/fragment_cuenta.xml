@@ -21,16 +21,18 @@
             android:background="@drawable/hero_gradient"
             android:padding="24dp">
 
-            <!-- Imagen de perfil -->
-            <ImageView
+            <!-- Imagen de perfil redondeada con borde -->
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivPerfil"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
-                android:src="@drawable/ic_launcher_foreground"
-                android:background="@drawable/circle_background"
-                android:padding="4dp"/>
+                android:scaleType="centerCrop"
+                app:strokeColor="@color/orange"
+                app:strokeWidth="3dp"
+                app:shapeAppearanceOverlay="@style/CircleImage"
+                tools:src="@drawable/p1"/>
 
             <!-- Nombre del usuario -->
             <TextView
@@ -76,6 +78,121 @@
                 android:textStyle="bold"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="12dp"/>
+
+            <!-- Card: Información del Usuario -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#1A1A1A"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Nombres -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nombres"
+                        android:textColor="#888888"
+                        android:textSize="12sp"/>
+                    <TextView
+                        android:id="@+id/tvNombresCuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cargando..."
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="12dp"/>
+
+                    <!-- Email -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textColor="#888888"
+                        android:textSize="12sp"/>
+                    <TextView
+                        android:id="@+id/tvEmailCuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cargando..."
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="12dp"/>
+
+                    <!-- Fecha de Nacimiento -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha de nacimiento"
+                        android:textColor="#888888"
+                        android:textSize="12sp"/>
+                    <TextView
+                        android:id="@+id/tvFechaNacCuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cargando..."
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="12dp"/>
+
+                    <!-- Miembro desde -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Miembro desde"
+                        android:textColor="#888888"
+                        android:textSize="12sp"/>
+                    <TextView
+                        android:id="@+id/tvMiembroDesdeCuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cargando..."
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="12dp"/>
+
+                    <!-- Teléfono -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Teléfono"
+                        android:textColor="#888888"
+                        android:textSize="12sp"/>
+                    <TextView
+                        android:id="@+id/tvTelefonoCuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cargando..."
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="12dp"/>
+
+                    <!-- Estado de Cuenta -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Estado de cuenta"
+                        android:textColor="#888888"
+                        android:textSize="12sp"/>
+                    <TextView
+                        android:id="@+id/tvEstadoCuenta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Verificado"
+                        android:textColor="#28A745"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Card: Editar Perfil -->
             <com.google.android.material.card.MaterialCardView
@@ -315,7 +432,6 @@
                 android:backgroundTint="#DC3545"
                 android:paddingVertical="14dp"
                 app:cornerRadius="12dp"
-                app:icon="@android:drawable/ic_menu_close_clear_cancel"
                 app:iconTint="#FFFFFF"
                 app:iconGravity="start"/>
 
