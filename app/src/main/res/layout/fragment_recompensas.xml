@@ -46,14 +46,14 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@android:drawable/star_big_on"
-                    android:tint="#FFD700"/>
+                    android:tint="@color/orange"/>
 
                 <TextView
                     android:id="@+id/tvNivelUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nivel Oro"
-                    android:textColor="#FFD700"
+                    android:textColor="@color/orange"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginStart="8dp"/>
@@ -84,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1,250"
-                    android:textColor="#FFD700"
+                    android:textColor="@color/orange"
                     android:textSize="48sp"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"/>
@@ -115,7 +115,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="750 pts más"
-                            android:textColor="#FFD700"
+                            android:textColor="@color/orange"
                             android:textSize="12sp"
                             android:textStyle="bold"/>
 
@@ -128,7 +128,7 @@
                         android:layout_height="8dp"
                         android:layout_marginTop="8dp"
                         android:progress="62"
-                        android:progressTint="#FFD700"
+                        android:progressTint="@color/orange"
                         android:progressBackgroundTint="#444444"/>
 
                 </LinearLayout>
@@ -157,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CÓDIGO DE MIEMBRO"
-                    android:textColor="#FFD700"
+                    android:textColor="@color/orange"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:letterSpacing="0.1"/>
@@ -215,12 +215,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Compartir QR"
-                    android:textColor="#000000"
-                    android:backgroundTint="#FFD700"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="@color/orange"
                     android:layout_marginTop="16dp"
                     app:cornerRadius="24dp"
                     app:icon="@android:drawable/ic_menu_share"
-                    app:iconTint="#000000"/>
+                    app:iconTint="#FFFFFF"/>
 
             </LinearLayout>
 
@@ -269,7 +269,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="💡 ¿Cómo ganar puntos?"
-                    android:textColor="#FFD700"
+                    android:textColor="@color/orange"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp"/>

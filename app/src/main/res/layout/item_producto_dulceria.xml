@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="$85.00"
-                    android:textColor="#FFD700"
+                    android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -97,7 +97,7 @@
                     android:src="@android:drawable/ic_input_add"
                     android:background="@drawable/btn_add_circle"
                     android:padding="6dp"
-                    android:tint="#000000"/>
+                    android:tint="@color/black"/>
 
             </LinearLayout>
 

@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.loginGoogle)
     implementation(libs.firebaseAuth)
     implementation(libs.firebaseDatabase)
+    implementation(libs.firebaseStorage)
 
     // AndroidX
     implementation(libs.androidx.core.ktx)
@@ -93,4 +94,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.glide)
+    implementation(libs.ccp)
 }

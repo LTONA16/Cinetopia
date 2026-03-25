@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.cinetopia.EditarPerfil
 import com.example.cinetopia.OpcionesLogin
 import com.example.cinetopia.R
 import com.example.cinetopia.databinding.FragmentCuentaBinding
@@ -27,10 +28,11 @@ class FragmentCuenta : Fragment() {
     private val binding get() = _binding!!
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var mContext: Context
+    private var currentImageResId: Int = R.drawable.pfp1
 
-    // Lista de recursos de imagen disponibles (p1 a p10)
+    // Lista de recursos de imagen disponibles
     private val profileImages = listOf(
-        R.drawable.pfp1, R.drawable.pfp2, R.drawable.pfp3, R.drawable.pfp4,R.drawable.pfp5
+        R.drawable.pfp1, R.drawable.pfp2, R.drawable.pfp3, R.drawable.pfp4, R.drawable.pfp5
     )
 
     override fun onAttach(context: Context) {
@@ -52,7 +54,7 @@ class FragmentCuenta : Fragment() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        // Establecer imagen aleatoria
+        // Establecer imagen aleatoria inicial
         setRandomProfileImage()
 
         // Mostrar información del usuario
@@ -63,9 +65,9 @@ class FragmentCuenta : Fragment() {
     }
 
     private fun setRandomProfileImage() {
-        // Seleccionar un índice aleatorio de la lista
         val randomIndex = Random.nextInt(profileImages.size)
-        binding.ivPerfil.setImageResource(profileImages[randomIndex])
+        currentImageResId = profileImages[randomIndex]
+        binding.ivPerfil.setImageResource(currentImageResId)
     }
 
     private fun cargarInformacion() {
@@ -120,7 +122,9 @@ class FragmentCuenta : Fragment() {
 
     private fun setupClickListeners() {
         binding.cardEditarPerfil.setOnClickListener {
-            Toast.makeText(mContext, "Editar Perfil", Toast.LENGTH_SHORT).show()
+            val intent = Intent(mContext, EditarPerfil::class.java)
+            intent.putExtra("IMAGEN_RES_ID", currentImageResId)
+            startActivity(intent)
         }
 
         binding.cardMisCompras.setOnClickListener {

@@ -18,7 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFD700"
+            android:background="@color/orange"
             android:padding="12dp">
 
             <TextView
@@ -78,9 +78,9 @@
                     android:ellipsize="end"/>
 
                 <View
-                    android:layout_width="40dp"
-                    android:layout_height="2dp"
-                    android:background="#FFD700"
+                    android:layout_width="96dp"
+                    android:layout_height="3dp"
+                    android:background="@color/blue"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="8dp"/>
 
@@ -94,7 +94,7 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:src="@android:drawable/ic_menu_mylocation"
-                        android:tint="#FFD700"/>
+                        android:tint="@color/blue"/>
 
                     <TextView
                         android:id="@+id/tvCineBoleto"
@@ -117,7 +117,7 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:src="@android:drawable/ic_menu_today"
-                        android:tint="#FFD700"/>
+                        android:tint="@color/blue"/>
 
                     <TextView
                         android:id="@+id/tvFechaBoleto"
@@ -150,7 +150,7 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:src="@android:drawable/ic_menu_gallery"
-                        android:tint="#FFD700"/>
+                        android:tint="@color/blue"/>
 
                     <TextView
                         android:id="@+id/tvSalaAsientosBoleto"
@@ -168,7 +168,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$350.00 MXN"
-                    android:textColor="#FFD700"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"/>
@@ -206,8 +206,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Detalles"
-                android:textColor="#FFD700"
-                android:backgroundTint="#2A2A2A"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/orange"
                 app:cornerRadius="8dp"/>
 
         </LinearLayout>

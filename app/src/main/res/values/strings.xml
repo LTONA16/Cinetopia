@@ -30,5 +30,8 @@
     <string name="Btn_cerrar_sesion">Cerrar sesión</string>
     <string name="default_web_client_id">1076298919294-qbdju1nij8tbk8ne6ii2j0c6cuvjj9v0.apps.googleusercontent.com</string>
 
+    <string name="item_uid">Uid</string>
+    <string name="item_nombre">Nombre</string>
+    <string name="item_email">Email</string>
 
 </resources>
