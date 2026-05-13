@@ -163,8 +163,7 @@ class EditarPerfil : AppCompatActivity() {
         datos["nombres"] = nombres
         datos["telefono"] = telefono
         datos["codigoPais"] = codigoPais
-        datos["codigoTelefono"] =
-            "$codigoPais $telefono" // Para mantener compatibilidad con tu vista previa
+        datos["codigoTelefono"] = "$codigoPais $telefono"
         datos["fecha_nac"] = fechaNac
 
         val ref = FirebaseDatabase.getInstance().getReference("Usuarios")
@@ -313,7 +312,7 @@ class EditarPerfil : AppCompatActivity() {
                 while (!uriTask.isSuccessful);
                 val urlImagenCargada = "${uriTask.result}"
                 if (uriTask.isSuccessful) {
-                    actualizarImagenBD(urlImagenCargada)
+                    //actualizarImagenBD(urlImagenCargada)
                 }
             }
             .addOnFailureListener { e ->
@@ -322,6 +321,7 @@ class EditarPerfil : AppCompatActivity() {
                     .show()
             }
     }
+
 
 
 }

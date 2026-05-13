@@ -66,6 +66,10 @@ class MainActivity : AppCompatActivity() {
         binding.FAB.setOnClickListener {
             loadFragment(FragmentRecompensas())
         }
+
+        binding.fabChat.setOnClickListener {
+            startActivity(Intent(this, ChatSupportActivity::class.java))
+        }
     }
 
     private fun loadFragment(fragment: Fragment) {

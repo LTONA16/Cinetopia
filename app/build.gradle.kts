@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.firebaseAuth)
     implementation(libs.firebaseDatabase)
     implementation(libs.firebaseStorage)
+    implementation("com.google.firebase:firebase-messaging-ktx:24.1.0")
 
     // AndroidX
     implementation(libs.androidx.core.ktx)
