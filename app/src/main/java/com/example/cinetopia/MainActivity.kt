@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private var currentFragment: Fragment? = null
 
     private lateinit var firebaseStorage: FirebaseStorage
+    private var userRole: String = "cliente"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +29,10 @@ class MainActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         comprobarSesion()
+        obtenerRolUsuario()
+        solicitarTokenFCM()
+        pedirPermisosNotificaciones()
+        iniciarServicioNotificaciones()
 
         // Cargar fragment inicial solo si no hay estado guardado
         if (savedInstanceState == null) {
@@ -68,7 +73,55 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fabChat.setOnClickListener {
-            startActivity(Intent(this, ChatSupportActivity::class.java))
+            if (userRole == "soporte" || userRole == "admin") {
+                startActivity(Intent(this, SupportDashboardActivity::class.java))
+            } else {
+                startActivity(Intent(this, ChatSupportActivity::class.java))
+            }
+        }
+    }
+
+    private fun obtenerRolUsuario() {
+        val uid = firebaseAuth.currentUser?.uid ?: return
+        com.google.firebase.database.FirebaseDatabase.getInstance().reference
+            .child("Usuarios").child(uid).child("role")
+            .addValueEventListener(object : com.google.firebase.database.ValueEventListener {
+                override fun onDataChange(snapshot: com.google.firebase.database.DataSnapshot) {
+                    userRole = snapshot.getValue(String::class.java) ?: "cliente"
+                }
+                override fun onCancelled(error: com.google.firebase.database.DatabaseError) {}
+            })
+    }
+
+    private fun solicitarTokenFCM() {
+        com.google.firebase.messaging.FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                val uid = firebaseAuth.currentUser?.uid
+                if (uid != null && token != null) {
+                    com.google.firebase.database.FirebaseDatabase.getInstance().reference
+                        .child("Usuarios").child(uid).child("fcmToken").setValue(token)
+                }
+            }
+        }
+    }
+
+    private fun pedirPermisosNotificaciones() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            val permission = android.Manifest.permission.POST_NOTIFICATIONS
+            if (androidx.core.content.ContextCompat.checkSelfPermission(this, permission) != 
+                android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                androidx.core.app.ActivityCompat.requestPermissions(this, arrayOf(permission), 101)
+            }
+        }
+    }
+
+    private fun iniciarServicioNotificaciones() {
+        val intent = Intent(this, com.example.cinetopia.Utilidades.ChatNotificationService::class.java)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
         }
     }
 

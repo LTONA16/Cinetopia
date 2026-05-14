@@ -98,4 +98,5 @@ dependencies {
 
     implementation(libs.glide)
     implementation(libs.ccp)
+    implementation("com.github.chrisbanes:PhotoView:2.3.0")
 }

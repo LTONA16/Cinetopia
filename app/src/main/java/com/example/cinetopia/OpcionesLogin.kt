@@ -108,6 +108,7 @@ class OpcionesLogin : AppCompatActivity() {
         hashMap["email"] = "${emailUsuario}"
         hashMap["uid"] = "${uidUsuario}"
         hashMap["fecha_nac"] = ""
+        hashMap["role"] = "cliente"
 
         val database = FirebaseDatabase.getInstance("https://cinetopia-60992-default-rtdb.firebaseio.com/")
         val ref = FirebaseDatabase.getInstance().getReference("Usuarios")

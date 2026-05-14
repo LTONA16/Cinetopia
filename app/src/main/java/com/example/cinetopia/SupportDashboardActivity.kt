@@ -12,12 +12,14 @@ import com.example.cinetopia.Modelos.ChatMessage
 import com.example.cinetopia.Modelos.UserRole
 import com.example.cinetopia.databinding.ActivitySupportDashboardBinding
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
 
 class SupportDashboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySupportDashboardBinding
     private lateinit var database: DatabaseReference
     private lateinit var adapter: ChatSessionAdapter
+    private val sessionsMap = mutableMapOf<String, Triple<UserRole, ChatMessage?, Boolean>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +30,7 @@ class SupportDashboardActivity : AppCompatActivity() {
         setupRecyclerView()
         loadChatSessions()
 
-        binding.toolbarDashboard.setNavigationIcon(R.drawable.ic_exit)
+        binding.toolbarDashboard.setNavigationIcon(R.drawable.ic_back)
         binding.toolbarDashboard.setNavigationOnClickListener { finish() }
     }
 
@@ -40,48 +42,60 @@ class SupportDashboardActivity : AppCompatActivity() {
                 intent.putExtra("targetUserName", userName)
                 startActivity(intent)
             },
-            onBlockClick = { userId ->
-                showBlockDialog(userId)
+            onLongClick = { user, isBlocked ->
+                showContextMenu(user, isBlocked)
             }
         )
         binding.rvChatSessions.layoutManager = LinearLayoutManager(this)
         binding.rvChatSessions.adapter = adapter
     }
 
+    private fun showContextMenu(user: UserRole, isBlocked: Boolean) {
+        val options = if (isBlocked) {
+            arrayOf("Desbloquear Usuario", "Eliminar Chat Permanentemente")
+        } else {
+            arrayOf("Bloquear Usuario", "Eliminar Chat Permanentemente")
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("Opciones: ${user.name.ifEmpty { user.email }}")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> {
+                        if (isBlocked) unblockUser(user.uid) else blockUser(user.uid)
+                    }
+                    1 -> {
+                        showDeleteConfirmation(user.uid)
+                    }
+                }
+            }
+            .show()
+    }
+
     private fun loadChatSessions() {
+        // Escuchar cambios en SupportChats
         database.child("SupportChats").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val sessions = mutableListOf<Pair<UserRole, ChatMessage?>>()
-                val totalChats = snapshot.childrenCount
-                if (totalChats == 0L) {
+                if (!snapshot.exists()) {
                     binding.txtNoChats.visibility = View.VISIBLE
                     adapter.setSessions(emptyList())
+                    sessionsMap.clear()
                     return
                 }
                 binding.txtNoChats.visibility = View.GONE
 
-                var processedCount = 0
+                val currentChatIds = snapshot.children.mapNotNull { it.key }
+                
+                // Limpiar sesiones que ya no existen
+                sessionsMap.keys.retainAll { chatId -> currentChatIds.contains(chatId) }
+
                 for (chatSnapshot in snapshot.children) {
                     val chatId = chatSnapshot.key ?: continue
                     val userId = chatId.replace("support_", "")
-                    
-                    // Get last message
                     val lastMsg = chatSnapshot.children.lastOrNull()?.getValue(ChatMessage::class.java)
 
-                    // Get User Info
-                    database.child("Usuarios").child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(userSnapshot: DataSnapshot) {
-                            val user = userSnapshot.getValue(UserRole::class.java) ?: UserRole(uid = userId, email = "Desconocido")
-                            sessions.add(user to lastMsg)
-                            processedCount++
-                            if (processedCount.toLong() == totalChats) {
-                                adapter.setSessions(sessions.sortedByDescending { it.second?.timestamp ?: 0L })
-                            }
-                        }
-                        override fun onCancelled(error: DatabaseError) {
-                            processedCount++
-                        }
-                    })
+                    // Solo agregar listeners si no los tenemos o si queremos actualizar datos
+                    fetchUserDetails(userId, chatId, lastMsg)
                 }
             }
 
@@ -91,15 +105,33 @@ class SupportDashboardActivity : AppCompatActivity() {
         })
     }
 
-    private fun showBlockDialog(userId: String) {
-        AlertDialog.Builder(this)
-            .setTitle("Bloquear Usuario")
-            .setMessage("¿Estás seguro de que quieres bloquear a este usuario del soporte?")
-            .setPositiveButton("Bloquear") { _, _ ->
-                blockUser(userId)
+    private fun fetchUserDetails(userId: String, chatId: String, lastMsg: ChatMessage?) {
+        // Obtener datos del usuario
+        database.child("Usuarios").child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(userSnapshot: DataSnapshot) {
+                val user = userSnapshot.getValue(UserRole::class.java)?.apply {
+                    if (this.uid.isEmpty()) {
+                        this.uid = userId
+                    }
+                } ?: UserRole(uid = userId, email = "Desconocido")
+                
+                // Escuchar estado de bloqueo reactivamente
+                database.child("BlockedUsers").child(userId).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(blockSnapshot: DataSnapshot) {
+                        val isBlocked = blockSnapshot.exists()
+                        sessionsMap[chatId] = Triple(user, lastMsg, isBlocked)
+                        updateAdapter()
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
             }
-            .setNegativeButton("Cancelar", null)
-            .show()
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    private fun updateAdapter() {
+        val sortedList = sessionsMap.values.sortedByDescending { it.second?.timestamp ?: 0L }
+        adapter.setSessions(sortedList)
     }
 
     private fun blockUser(userId: String) {
@@ -107,5 +139,58 @@ class SupportDashboardActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Toast.makeText(this, "Usuario bloqueado", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun unblockUser(userId: String) {
+        database.child("BlockedUsers").child(userId).removeValue()
+            .addOnSuccessListener {
+                Toast.makeText(this, "Usuario desbloqueado", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun showDeleteConfirmation(userId: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Eliminar Chat")
+            .setMessage("¿Estás seguro de que quieres eliminar este chat permanentemente? Se borrarán todos los mensajes e imágenes.")
+            .setPositiveButton("Eliminar") { _, _ ->
+                deleteChatPermanently(userId)
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun deleteChatPermanently(userId: String) {
+        val chatRoomId = "support_$userId"
+        val chatRef = database.child("SupportChats").child(chatRoomId)
+        
+        chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val storage = FirebaseStorage.getInstance()
+                
+                for (msgSnapshot in snapshot.children) {
+                    val msg = msgSnapshot.getValue(ChatMessage::class.java)
+                    // Borrar imágenes
+                    if (msg?.type == "image" && !msg.imageUrl.isNullOrEmpty()) {
+                        try {
+                            val fileRef = storage.getReferenceFromUrl(msg.imageUrl!!)
+                            fileRef.delete()
+                        } catch (e: Exception) {}
+                    }
+                    // Borrar audios
+                    if (msg?.type == "audio" && !msg.audioUrl.isNullOrEmpty()) {
+                        try {
+                            val fileRef = storage.getReferenceFromUrl(msg.audioUrl!!)
+                            fileRef.delete()
+                        } catch (e: Exception) {}
+                    }
+                }
+                
+                chatRef.removeValue().addOnSuccessListener {
+                    Toast.makeText(this@SupportDashboardActivity, "Chat eliminado", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 }

@@ -5,16 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinetopia.Modelos.ChatMessage
 import com.example.cinetopia.Modelos.UserRole
+import com.example.cinetopia.R
 import com.example.cinetopia.databinding.ItemChatSessionBinding
 
 class ChatSessionAdapter(
     private val onChatClick: (String, String) -> Unit, // userId, userName
-    private val onBlockClick: (String) -> Unit // userId
+    private val onLongClick: (UserRole, Boolean) -> Unit // user, isBlocked
 ) : RecyclerView.Adapter<ChatSessionAdapter.SessionViewHolder>() {
 
-    private var sessions = mutableListOf<Pair<UserRole, ChatMessage?>>()
+    private var sessions = mutableListOf<Triple<UserRole, ChatMessage?, Boolean>>()
 
-    fun setSessions(newSessions: List<Pair<UserRole, ChatMessage?>>) {
+    fun setSessions(newSessions: List<Triple<UserRole, ChatMessage?, Boolean>>) {
         sessions = newSessions.toMutableList()
         notifyDataSetChanged()
     }
@@ -31,19 +32,35 @@ class ChatSessionAdapter(
     override fun getItemCount(): Int = sessions.size
 
     inner class SessionViewHolder(private val binding: ItemChatSessionBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(session: Pair<UserRole, ChatMessage?>) {
+        fun bind(session: Triple<UserRole, ChatMessage?, Boolean>) {
             val user = session.first
             val lastMsg = session.second
+            val isBlocked = session.third
 
             binding.txtUserName.text = if (user.name.isNotEmpty()) user.name else user.email
-            binding.txtLastMessage.text = lastMsg?.message ?: "Sin mensajes"
+            
+            val lastMessageText = when {
+                lastMsg == null -> "Sin mensajes"
+                lastMsg.isDeleted -> "Mensaje eliminado"
+                lastMsg.type == "image" -> "📷 Foto"
+                else -> lastMsg.message
+            }
+            binding.txtLastMessage.text = lastMessageText
+
+            if (isBlocked) {
+                binding.root.alpha = 0.5f
+                binding.txtUserName.append(" (Bloqueado)")
+            } else {
+                binding.root.alpha = 1.0f
+            }
 
             binding.root.setOnClickListener {
                 onChatClick(user.uid, if (user.name.isNotEmpty()) user.name else user.email)
             }
             
-            binding.btnBlock.setOnClickListener {
-                onBlockClick(user.uid)
+            binding.root.setOnLongClickListener {
+                onLongClick(user, isBlocked)
+                true
             }
         }
     }

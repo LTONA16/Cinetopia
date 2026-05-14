@@ -49,14 +49,5 @@
                 android:ellipsize="end" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/btnBlock"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:src="@drawable/tachado"
-            app:tint="#FF0000"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

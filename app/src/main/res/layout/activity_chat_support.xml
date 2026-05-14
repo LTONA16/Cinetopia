@@ -17,9 +17,21 @@
         android:id="@+id/rvMessages"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/layoutInput"
+        android:layout_above="@+id/txtSlideToCancel"
         android:layout_below="@id/toolbarChat"
         android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/txtSlideToCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txtBlocked"
+        android:background="#44000000"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="← Desliza para cancelar"
+        android:textColor="#FF9800"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txtBlocked"
@@ -40,7 +52,8 @@
         android:layout_alignParentBottom="true"
         android:background="#1A1A1A"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:gravity="center_vertical">
 
         <ImageButton
             android:id="@+id/btnAttach"
@@ -69,6 +82,15 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_send"
             app:tint="#0084FF" />
+
+        <ImageButton
+            android:id="@+id/btnRecord"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_btn_orange_circle"
+            android:src="@drawable/ic_mic"
+            app:tint="#FFFFFF" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -102,6 +102,7 @@ class Registro_email : AppCompatActivity() {
         hashMap["email"] = "${emailUsuario}"
         hashMap["uid"] = "${uidUsuario}"
         hashMap["fecha_nac"] = ""
+        hashMap["role"] = "cliente"
 
         val ref = FirebaseDatabase.getInstance().getReference("Usuarios")
         ref.child(uidUsuario!!)

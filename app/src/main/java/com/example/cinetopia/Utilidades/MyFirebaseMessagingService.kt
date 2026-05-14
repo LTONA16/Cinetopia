@@ -14,6 +14,17 @@ import com.google.firebase.messaging.RemoteMessage
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        updateTokenInDatabase(token)
+    }
+
+    private fun updateTokenInDatabase(token: String) {
+        val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return
+        com.google.firebase.database.FirebaseDatabase.getInstance().reference
+            .child("Usuarios").child(uid).child("fcmToken").setValue(token)
+    }
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
